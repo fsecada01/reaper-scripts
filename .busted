@@ -1,0 +1,9 @@
+return {
+  _all = {
+    lpath = "lib/?.lua;lib/?/init.lua",
+    helper = "spec/support/reaper_mock.lua",
+  },
+  default = {
+    verbose = true,
+  },
+}

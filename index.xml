@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<index version="1" name="reaper-scripts">
+  <!--
+    This file is a ReaPack repository index. It is normally generated, not
+    hand-written: once scripts with proper header blocks exist under
+    Scripts/, run the `reapack-index` CLI (https://github.com/cfillion/reapack-index)
+    against this repo root to (re)populate <category>/<reapack> entries here.
+    Left empty on purpose — no scripts have been added yet.
+  -->
+</index>

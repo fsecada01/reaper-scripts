@@ -1,0 +1,13 @@
+luarocks/
+lua_modules/
+.luarocks/
+*.rock
+
+luacov.stats.out
+luacov.report.out
+
+.DS_Store
+Thumbs.db
+
+*.swp
+*~
