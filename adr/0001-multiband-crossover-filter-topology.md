@@ -54,28 +54,39 @@ steep splits over brickwall/linear-phase ones:**
 - For the starved high ("air") band specifically: prefer a **broad,
   gentle high-shelf/bell EQ (ReaEQ) + upward expansion** over a hard
   bandpass split. The empirical baseline (see epic doc) shows the high
-  band is *always* starved (never above -32 dB, not intermittently), so
-  an always-on gentle lift fits the data better than a gated multiband
-  split, and carries lower artifact risk.
-- **Open question, needs a spike before Story 3 relies on it**:
-  ReaXcomp's internal crossover topology (IIR vs. FFT/linear-phase) is
-  not documented publicly. Before trusting it for restoration-quality
-  work, capture its impulse response and inspect group delay / pre-ring
-  through the band-split-and-sum chain. If it turns out to be
-  steep/FFT-based, build the sub/mid split manually via cascaded ReaEQ
-  bands approximating LR4 instead of trusting ReaXcomp's default.
-  (ReaEQ itself is documented by the REAPER community as *not*
-  linear-phase, i.e. minimum-phase — consistent with what we want.)
+  band is *nearly always* starved (median -41.3 dB, staying below -29.2 dB
+  through validation against the real source) rather than only
+  intermittently starved, so an always-on gentle lift still fits the data
+  better than a gated multiband split, and carries lower artifact risk —
+  but -29.2 dB is a high watermark from one validation run, not a proven
+  hard ceiling, so this should be re-checked once Story 3 has more of the
+  source to test against.
+- **Resolved: build Story 3 directly against ReaXcomp, skip the
+  pre-emptive impulse-response spike.** ReaXcomp's internal crossover
+  topology (IIR vs. FFT/linear-phase) is still not documented publicly,
+  but rather than block Story 3 on a standalone validation spike, ship
+  the initial FX-chain script using ReaXcomp's native band split and
+  evaluate it by ear/measurement against the real source once built. If
+  it turns out to introduce audible pre-ring/smearing, the fallback
+  options are (a) a custom JSFX plugin doing the split manually (the
+  epic's broader "no custom JSFX/DSP" stance is about the *decision*
+  logic staying pure-Lua, not a hard ban on a JSFX band-splitter if
+  ReaXcomp's turns out to be unusable), or (b) a third-party
+  multiband tool (e.g. something from Tukan Audio) in place of
+  ReaXcomp. Neither is being built now — noted here so it isn't
+  rediscovered from scratch later.
 
 ## Consequences
 
 - Story 1 proceeds unchanged; this ADR doesn't block it.
-- Story 3's design should budget for the ReaXcomp impulse-response spike
-  before finalizing its FX chain, and should default the high band to
-  shelf+expansion rather than a hard split unless testing shows otherwise.
-- If the spike finds ReaXcomp uses a steep/FFT crossover, Story 3 gets
-  more complex (manual LR4-style ReaEQ cascade instead of relying on
-  ReaXcomp's native split) — flagged here so it doesn't surprise
+- Story 3 builds directly against ReaXcomp's native band split (no
+  upfront validation spike), and should default the high band to
+  shelf+expansion rather than a hard split unless testing shows
+  otherwise.
+- If ReaXcomp's split proves audibly problematic once built, Story 3
+  (or a follow-up) gets more complex — manual LR4-style ReaEQ cascade,
+  a custom JSFX splitter, or a third-party tool (e.g. Tukan Audio)
+  instead of ReaXcomp's default — flagged here so it doesn't surprise
   estimation later.
 - No numeric threshold/ratio/attack-release starting values came out of
   the research; Story 2/3 still need to derive those empirically from the
