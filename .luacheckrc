@@ -10,6 +10,7 @@ max_line_length = 120
 exclude_files = {
     "lua_modules/",
     "luarocks/",
+    ".lua_env/",
 }
 
 files["spec/**/*.lua"] = {

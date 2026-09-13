@@ -1,6 +1,7 @@
 luarocks/
 lua_modules/
 .luarocks/
+.lua_env/
 *.rock
 
 luacov.stats.out
